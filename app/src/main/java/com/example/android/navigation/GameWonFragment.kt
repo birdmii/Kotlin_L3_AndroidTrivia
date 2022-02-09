@@ -19,6 +19,7 @@ package com.example.android.navigation
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import androidx.core.app.ShareCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
@@ -44,17 +45,23 @@ class GameWonFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.winner_menu, menu)
+        inflater.inflate(R.menu.winner_menu, menu)
     }
 
     private fun getShareIntent(): Intent {
         var args = GameWonFragmentArgs.fromBundle(requireArguments())
-        val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.setType("text/plain").putExtra(
-            Intent.EXTRA_TEXT,
-            getString(R.string.share_success_text, args.numCorrect, args.numQuestions)
-        )
-        return shareIntent
+//        val shareIntent = Intent(Intent.ACTION_SEND)
+//        shareIntent.setType("text/plain").putExtra(
+//            Intent.EXTRA_TEXT,
+//            getString(R.string.share_success_text, args.numCorrect, args.numQuestions)
+//        )
+//        return shareIntent
+
+        // Generating the intent using ShareCompat same code with commented code
+        return ShareCompat.IntentBuilder.from(requireActivity())
+            .setText(getString(R.string.share_success_text, args.numCorrect, args.numQuestions))
+            .setType("text/plain").intent
+
     }
 
     private fun shareSuccess() {
